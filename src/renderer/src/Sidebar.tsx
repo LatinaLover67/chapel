@@ -1,6 +1,7 @@
 import type { EditSummary } from '../../shared/api'
 import type { View } from './App'
 import { Layers, Plus, Sliders } from './icons'
+import { useUpdate } from './useUpdate'
 
 export function Logo(): React.JSX.Element {
   return (
@@ -15,6 +16,7 @@ export function Logo(): React.JSX.Element {
 }
 
 export default function Sidebar(p: { view: View; edits: EditSummary[]; busy: Set<string>; go(v: View): void }): React.JSX.Element {
+  const u = useUpdate()
   const active = (v: View): string => (v.kind === p.view.kind && (v.kind !== 'edit' || (p.view.kind === 'edit' && v.editDir === p.view.editDir)) ? ' active' : '')
   return (
     <nav className="sidebar">
@@ -33,6 +35,9 @@ export default function Sidebar(p: { view: View; edits: EditSummary[]; busy: Set
           </button>
         ))}
       </div>
+      {u.kind === 'ready' && <button className="update-pill" onClick={() => void window.chapel.update.install()}><span className="dot on" /> Update ready · Restart</button>}
+      {u.kind === 'available' && <button className="update-pill" onClick={() => void window.chapel.update.download()}><span className="dot on" /> Update out · Download</button>}
+      {u.kind === 'downloading' && <div className="update-pill"><span className="dot" /> Downloading update {Math.round((u.progress ?? 0) * 100)}%</div>}
       <button className={'nav' + active({ kind: 'settings' })} onClick={() => p.go({ kind: 'settings' })}><Sliders /> Settings</button>
     </nav>
   )

@@ -5,6 +5,7 @@ import { paletteColors, useSettings } from './useSettings'
 import ModelMenu from './ModelMenu'
 import { Logo } from './Sidebar'
 import { MadeBy, Row, Segmented, Toggle } from './ui'
+import { updateText, useUpdate } from './useUpdate'
 
 const SAMPLE = [['0', 0], ['1', 0], ['|', 2], ['*', 3], ['/', 2], ['~', 3]] as const
 
@@ -14,6 +15,7 @@ export default function SettingsView(): React.JSX.Element {
   const [okey, setOkey] = useState('')
   const [okeyNote, setOkeyNote] = useState('')
   const [checking, setChecking] = useState(false)
+  const u = useUpdate()
   const [keyNote, setKeyNote] = useState('')
   const [handle, setHandle] = useState(s.watermark.text ?? '')
   const [info, setInfo] = useState<AppInfo | null>(null)
@@ -146,6 +148,21 @@ export default function SettingsView(): React.JSX.Element {
               onChange={(e) => { const n = Number(e.target.value); if (n >= 0.1 && n <= 1000) void update({ budgetUsd: n }) }} /></span>
           )}
           <Toggle label="Budget per request" on={s.budgetUsd !== null} onChange={(on) => void update({ budgetUsd: on ? 2 : null })} />
+        </Row>
+      </div>
+
+      <h3 className="sec">Updates</h3>
+      <div className="card">
+        <Row title="Install updates automatically" desc="New builds download in the background and install when you close Chapel. Off, Chapel still tells you when one is out.">
+          <Toggle label="Install updates automatically" on={s.autoUpdate} onChange={(autoUpdate) => void update({ autoUpdate })} />
+        </Row>
+        <Row title="This build" desc={<span className="mono">{info ? `${info.version} · ${info.build}` : ''}</span>}>
+          <span className="faint small">{updateText(u)}</span>
+          {u.kind === 'ready'
+            ? <button className="primary" onClick={() => void window.chapel.update.install()}>Restart to update</button>
+            : u.kind === 'available'
+              ? <button onClick={() => void window.chapel.update.download()}>Download</button>
+              : <button disabled={u.kind === 'checking' || u.kind === 'downloading'} onClick={() => void window.chapel.update.check()}>Check now</button>}
         </Row>
       </div>
 

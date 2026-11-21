@@ -14,6 +14,10 @@ import { createSettingsStore, sanitizePatch } from './settings'
 import { addStyle, listStyles, removeStyle, type StyleRoot } from './styles'
 import { detectAgents, envApiKey } from './agents'
 import { findCodex, runCodex, type CodexStatus } from './codex'
+import { downloadUpdate, fetchBuild, installArgs, isNewBuild, RELEASE_URL, type BuildInfo } from './updater'
+import type { UpdateState } from '../shared/api'
+
+declare const __BUILD_ID__: string
 import { ensureRuntime, type ExecFn, type Runtime } from './runtime'
 import { createEdit, listEdits, readMeta } from './editFolder'
 import { firstPrompt, runAgent } from './agent'
@@ -204,7 +208,54 @@ app.whenReady().then(() => {
     removeStyle(userStyles, String(name))
     return listStyles(roots())
   })
-  ipcMain.handle('app:info', () => ({ version: app.getVersion(), dataDir: userData }))
+  ipcMain.handle('app:info', () => ({ version: app.getVersion(), build: __BUILD_ID__, dataDir: userData }))
+
+  let update: UpdateState = { kind: 'idle' }, build: BuildInfo | null = null, installer: string | null = null, lastSent = 0
+  const setUpdate = (u: UpdateState): void => {
+    update = u
+    win?.webContents.send('update:state', u)
+  }
+  const getUpdate = async (): Promise<void> => {
+    if (!build) return
+    setUpdate({ kind: 'downloading', progress: 0 })
+    try {
+      installer = await downloadUpdate(RELEASE_URL, build, join(userData, 'update'), (u) => net.fetch(u), (p) => {
+        if (Date.now() - lastSent > 250) { lastSent = Date.now(); setUpdate({ kind: 'downloading', progress: p }) }
+      })
+      setUpdate({ kind: 'ready' })
+    } catch (e) {
+      setUpdate({ kind: 'error', detail: (e as Error).message })
+    }
+  }
+  const checkUpdate = async (): Promise<void> => {
+    if (!app.isPackaged || __BUILD_ID__ === 'dev') return setUpdate({ kind: 'none', detail: 'This build doesn\'t update itself.' })
+    if (update.kind === 'checking' || update.kind === 'downloading' || update.kind === 'ready') return
+    setUpdate({ kind: 'checking' })
+    try {
+      build = await fetchBuild(RELEASE_URL, (u) => net.fetch(u, { cache: 'no-store' }))
+      if (!isNewBuild(__BUILD_ID__, build)) return setUpdate({ kind: 'none' })
+      if (store.get().autoUpdate) await getUpdate()
+      else setUpdate({ kind: 'available' })
+    } catch {
+      setUpdate({ kind: 'error', detail: "Chapel couldn't reach GitHub to check for updates." })
+    }
+  }
+  const runInstaller = (reopen: boolean): void => {
+    if (!installer) return
+    spawn(installer, installArgs(reopen), { detached: true, stdio: 'ignore' }).unref()
+    installer = null
+  }
+  ipcMain.handle('update:get', () => update)
+  ipcMain.handle('update:check', () => checkUpdate())
+  ipcMain.handle('update:download', () => getUpdate())
+  ipcMain.handle('update:install', () => {
+    runInstaller(true)
+    app.quit()
+  })
+  // a downloaded update installs when chapel closes, and the next start is the new build
+  app.on('before-quit', () => runInstaller(false))
+  setTimeout(() => void checkUpdate(), 8000)
+  setInterval(() => void checkUpdate(), 4 * 60 * 60 * 1000)
   ipcMain.handle('app:open', async (_e, what: string) => {
     const target = what === 'data' ? userData : what === 'edits' ? store.get().editsDir : what === 'styles' ? userStyles : ownEdit(what)
     mkdirSync(target, { recursive: true })

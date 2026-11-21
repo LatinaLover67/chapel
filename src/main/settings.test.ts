@@ -24,7 +24,7 @@ beforeEach(() => {
 test('defaults', () => {
   expect(store.get()).toEqual({
     model: 'claude-opus-5-5', codexModel: 'default', effort: null, agent: 'claude', editsDir: EDITS, watermark: { chapel: true, text: null },
-    ascii: 'theme', mode: 'night', look: 'soft', notify: true, maxTurns: 80, budgetUsd: null, hasApiKey: false, hasOpenAiKey: false
+    ascii: 'theme', mode: 'night', look: 'soft', notify: true, autoUpdate: true, maxTurns: 80, budgetUsd: null, hasApiKey: false, hasOpenAiKey: false
   })
 })
 
@@ -96,4 +96,9 @@ test('codex can be picked, with its own model', () => {
   expect(sanitizePatch({ agent: 'codex', codexModel: 'gpt-6.2-sol' })).toEqual({ agent: 'codex', codexModel: 'gpt-6.2-sol' })
   expect(sanitizePatch({ codexModel: 'default' })).toEqual({ codexModel: 'default' })
   expect(() => store.update({ codexModel: 'claude-opus-5-5' })).toThrow('Unknown model.')
+})
+
+test('auto update can be switched off', () => {
+  expect(sanitizePatch({ autoUpdate: false })).toEqual({ autoUpdate: false })
+  expect(sanitizePatch({ autoUpdate: 'no' })).toEqual({})
 })

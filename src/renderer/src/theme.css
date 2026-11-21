@@ -79,6 +79,8 @@ h1 { font-size: 30px; font-weight: 500; letter-spacing: -0.035em; line-height: 1
 .section-label { font-size: 11px; color: var(--faint); padding: 26px 10px 8px; }
 .recent { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 1px; }
 .hint { font-size: 12.5px; color: var(--dim); padding: 2px 10px; }
+.update-pill { display: flex; align-items: center; gap: 8px; width: 100%; margin: 0 0 6px; padding: 6px 10px; border: 1px solid var(--line2); border-radius: 8px; background: var(--well); font-size: 12.5px; color: var(--ink); }
+button.update-pill:hover { border-color: var(--faint); }
 
 .home { max-width: 752px; min-height: 100%; margin: 0 auto; padding: 56px 24px 72px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
 .banner { display: block; margin: 0 0 22px; max-width: 100%; }

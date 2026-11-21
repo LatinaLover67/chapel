@@ -31,6 +31,13 @@ const api: ChapelApi = {
     remove: (name) => call('styles:remove', name)
   },
   app: { info: () => call('app:info'), open: (what) => call('app:open', what) },
+  update: {
+    get: () => call('update:get'),
+    check: () => call('update:check'),
+    download: () => call('update:download'),
+    install: () => call('update:install'),
+    onState: (cb) => listen('update:state', cb)
+  },
   edits: {
     list: () => call('edits:list'),
     create: (e) => call('edits:create', e),

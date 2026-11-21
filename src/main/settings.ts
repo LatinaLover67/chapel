@@ -34,6 +34,7 @@ export function sanitizePatch(p: unknown): Patch {
   if (o.mode === 'night' || o.mode === 'day') out.mode = o.mode
   if (o.look === 'soft' || o.look === 'square') out.look = o.look
   if (typeof o.notify === 'boolean') out.notify = o.notify
+  if (typeof o.autoUpdate === 'boolean') out.autoUpdate = o.autoUpdate
   const turns = num(o.maxTurns, 1, 500, Math.round), budget = num(o.budgetUsd, 0.1, 1000, (n) => Math.round(n * 100) / 100)
   if (turns !== undefined) out.maxTurns = turns
   if (budget !== undefined) out.budgetUsd = budget
@@ -56,7 +57,7 @@ export function createSettingsStore(dir: string, defaultEditsDir: string, vault:
   const openaiFile = join(dir, 'openai.bin')
   const defaults: Stored = {
     model: DEFAULT_MODEL, codexModel: 'default', effort: null, agent: 'claude', editsDir: defaultEditsDir, watermark: { chapel: true, text: null },
-    ascii: 'theme', mode: 'night', look: 'soft', notify: true, maxTurns: 80, budgetUsd: null
+    ascii: 'theme', mode: 'night', look: 'soft', notify: true, autoUpdate: true, maxTurns: 80, budgetUsd: null
   }
   const read = (): Stored => (existsSync(file) ? { ...defaults, ...JSON.parse(readFileSync(file, 'utf8')) } : defaults)
 
