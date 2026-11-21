@@ -107,3 +107,11 @@ loadThree().then((THREE) => {
     s.drawImage(gl, (w - side) / 2, (h - side) / 2, side, side)
   }, { cell: [4, 6], font: 6.5, reach: 90 })
 }).catch(() => mountAscii(markCanvas, drawFlatMark, { cell: [4, 6], font: 6.5, reach: 90 }))
+
+for (const b of document.querySelectorAll('[data-copy]')) {
+  b.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(b.dataset.copy)
+    b.classList.add('copied')
+    setTimeout(() => b.classList.remove('copied'), 1500)
+  })
+}

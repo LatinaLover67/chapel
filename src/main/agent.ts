@@ -11,7 +11,7 @@ import { makeToolGate } from './toolGate'
 export type QueryFn = (args: { prompt: string; options: Record<string, unknown> }) => AsyncIterable<any>
 export interface RunArgs {
   editDir: string; prompt: string; apiKey: string; model: string; python: string; configDir: string
-  signal: AbortSignal; onLine(l: ChatLine): void
+  signal: AbortSignal; onLine(l: ChatLine): void; claudePath?: string
 }
 
 export function firstPrompt(style: string, song: string, notes: string): string {
@@ -60,6 +60,7 @@ export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknow
     canUseTool: makeToolGate(run.editDir, run.python),
     permissionMode: 'default',
     maxTurns: 80,
+    ...(run.claudePath ? { pathToClaudeCodeExecutable: run.claudePath } : {}),
     abortController
   }
 

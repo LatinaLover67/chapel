@@ -20,6 +20,11 @@ protocol.registerSchemesAsPrivileged([
 
 let win: BrowserWindow | null = null
 
+// spawn can't run a program packed inside app.asar
+const claudePath = app.isPackaged
+  ? join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', '@anthropic-ai', `claude-agent-sdk-${process.platform}-${process.arch}`, process.platform === 'win32' ? 'claude.exe' : 'claude')
+  : undefined
+
 const stylesDir = (): string => (app.isPackaged ? join(process.resourcesPath, 'styles') : join(app.getAppPath(), 'styles'))
 
 const exec: ExecFn = (cmd, args) =>
@@ -103,7 +108,7 @@ app.whenReady().then(() => {
     try {
       const rt = await getRuntime()
       const s = store.get()
-      done(editDir, await runAgent({ editDir, prompt, apiKey, model: s.model, python: rt.python, configDir, signal: ac.signal, onLine: (l) => send(editDir, l) }))
+      done(editDir, await runAgent({ editDir, prompt, apiKey, model: s.model, python: rt.python, configDir, claudePath, signal: ac.signal, onLine: (l) => send(editDir, l) }))
     } catch (e) {
       send(editDir, { kind: 'error', text: (e as Error).message })
       done(editDir, { ok: false, video: null })

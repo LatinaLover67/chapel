@@ -37,13 +37,10 @@
       <h1>Drop your clips.<br />Claude cuts the edit.</h1>
       <p>Chapel is a free desktop app that edits videos with Claude. Give it your clips and a song, pick a style, and it cuts them on the beat. Then change anything by typing. It runs on your own Anthropic API key.</p>
       <div class="cta">
-        <a class="bar" href="#download">
-          <span class="seg os">Windows</span>
-          <span class="seg go">Download Chapel <span class="arrow">↓</span></span>
-        </a>
-        <a class="button ghost" href="#how">How it works</a>
+        <button class="bar" data-copy="irm https://raw.githubusercontent.com/LatinaLover67/chapel/main/install.ps1 | iex" aria-label="Copy the install command"><span class="seg os">Windows</span><span class="seg cmd"><span class="dollar">$</span> irm …/install.ps1 | iex</span><span class="seg icon"><svg class="ic" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 10.5H3A1.5 1.5 0 0 1 1.5 9V3A1.5 1.5 0 0 1 3 1.5h6A1.5 1.5 0 0 1 10.5 3v.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span class="done">copied</span></span></button>
+        <a class="button ghost" href="https://github.com/LatinaLover67/chapel" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
       </div>
-      <p class="fine">Free. Windows 10 and 11. You pay Anthropic only for what Claude uses.</p>
+      <p class="fine">Paste this in PowerShell. It installs Chapel and opens it.</p>
       <canvas class="hands" aria-hidden="true"></canvas>
       <div class="logo3d" aria-hidden="true"><canvas></canvas></div>
     </section>
@@ -102,7 +99,7 @@
           <div><h3>Your key</h3><p>Your key is encrypted with Windows' own protection and stays on your computer. Chapel only sends it to Anthropic.</p></div>
           <div><h3>Your videos</h3><p>Your clips stay on your computer. Claude reads the edit plan and the still frames it checks, and those go to Anthropic.</p></div>
           <div><h3>Watermark</h3><p>Edits carry a small "made with chapel" in the corner. Turn it off in Settings, or add your own handle.</p></div>
-          <div><h3>What it needs</h3><p>Windows 10 or 11, Python 3.12, ffmpeg and Git for Windows. Chapel checks for each one and tells you what's missing.</p></div>
+          <div><h3>What it needs</h3><p>Windows 10 or 11, Python 3.12, ffmpeg and Git for Windows. The install command sets up whatever is missing.</p></div>
           <div><h3>Styles</h3><p>Chapel ships with the clip style. Uploading your own styles as .zip files is coming next.</p></div>
         </div>
       </div>
@@ -114,10 +111,11 @@
         <div class="label"><b>05</b> Download</div>
         <h2>Get Chapel and make<br />your first edit.</h2>
         <div class="cta left">
-          <span class="bar off"><span class="seg os">Windows</span><span class="seg go">Installer coming soon</span></span>
+          <button class="bar" data-copy="irm https://raw.githubusercontent.com/LatinaLover67/chapel/main/install.ps1 | iex" aria-label="Copy the install command"><span class="seg os">Windows</span><span class="seg cmd"><span class="dollar">$</span> irm …/install.ps1 | iex</span><span class="seg icon"><svg class="ic" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 10.5H3A1.5 1.5 0 0 1 1.5 9V3A1.5 1.5 0 0 1 3 1.5h6A1.5 1.5 0 0 1 10.5 3v.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span class="done">copied</span></span></button>
+          <a class="button ghost" href="https://github.com/LatinaLover67/chapel/releases/latest/download/Chapel-Setup.exe">Download .exe</a>
         </div>
         <div class="reqs">
-          <div class="tr"><span>Windows 10 and 11</span><span class="mono dim">.exe · soon</span></div>
+          <div class="tr"><span>Windows 10 and 11</span><a class="mono" href="https://github.com/LatinaLover67/chapel/releases/latest/download/Chapel-Setup.exe">Chapel-Setup.exe</a></div>
           <div class="tr"><span>Python 3.12</span><a class="mono" href="https://www.python.org/downloads/">python.org</a></div>
           <div class="tr"><span>ffmpeg</span><a class="mono" href="https://ffmpeg.org/download.html">ffmpeg.org</a></div>
           <div class="tr"><span>Git for Windows</span><a class="mono" href="https://git-scm.com/download/win">git-scm.com</a></div>

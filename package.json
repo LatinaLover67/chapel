@@ -1,6 +1,7 @@
 {
   "name": "chapel",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "license": "MIT",
   "description": "Chapel: a free AI video editor",
   "main": "./out/main/index.js",
   "author": "LatinaLover67",

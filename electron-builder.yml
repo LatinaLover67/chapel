@@ -5,39 +5,48 @@ directories:
 files:
   - '!**/.vscode/*'
   - '!src/*'
+  - '!site/**'
+  - '!styles/**'
+  - '!.venv/**'
+  - '!.pytest_cache/**'
+  - '!install.ps1'
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+extraResources:
+  - from: styles
+    to: styles
+    filter:
+      - '**/*'
+      - '!**/tests/**'
+      - '!**/__pycache__/**'
 asarUnpack:
   - resources/**
+  - node_modules/@anthropic-ai/claude-agent-sdk-*/**
 win:
   executableName: Chapel
+  target:
+    - target: nsis
+      arch: x64
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: ${productName}-Setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
 mac:
   entitlementsInherit: build/entitlements.mac.plist
-  extendInfo:
-    - NSCameraUsageDescription: Application requests access to the device's camera.
-    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
-    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
-    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
     - AppImage
-    - snap
-    - deb
-  maintainer: electronjs.org
-  category: Utility
+  category: Video
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://github.com/LatinaLover67/chapel/releases
+  provider: github
+  owner: LatinaLover67
+  repo: chapel

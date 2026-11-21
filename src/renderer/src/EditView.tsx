@@ -20,7 +20,7 @@ export default function EditView(p: { editDir: string; fresh?: boolean }): React
     })
     return () => { offLine(); offDone() }
   }, [p.editDir])
-  useEffect(() => end.current?.scrollIntoView({ block: 'end' }), [lines])
+  useEffect(() => { end.current?.scrollIntoView({ block: 'end' }) }, [lines])
 
   const change = (): void => {
     if (!text.trim()) return
