@@ -7,3 +7,5 @@ out
 .venv/
 __pycache__/
 *.partial.mp4
+.vercel
+.env*
