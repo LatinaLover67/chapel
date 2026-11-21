@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapel: drop your clips, Claude cuts the edit</title>
+  <meta name="description" content="Chapel is a free desktop app that edits videos with Claude. Give it your clips and a song, pick a style, and change anything by typing." />
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#"><img src="assets/mark.svg" alt="" width="18" height="18" /> Chapel</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#styles">Styles</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="right">
+      <a class="madeby" href="https://x.com/ohbabyilvlatina" target="_blank" rel="noopener" aria-label="Made by ✝, @ohbabyilvlatina on X">
+        <svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#f2f0ea"/><circle cx="20" cy="15.5" r="7" fill="#0f2350"/><path d="M6.5 34.5C9 28 14 24.5 20 24.5s11 3.5 13.5 10a20 20 0 0 1-27 0z" fill="#0f2350"/></svg>
+        <span class="who">
+          <small>Made by</small>
+          <span><b>✝</b><svg class="check" viewBox="-1 -1 18 18" aria-hidden="true"><path fill="#1d9bf0" stroke="#1d9bf0" stroke-width="1.6" stroke-linejoin="round" d="M16 8 14.1 10.53 13.66 13.66 10.53 14.1 8 16 5.47 14.1 2.34 13.66 1.9 10.53 0 8 1.9 5.47 2.34 2.34 5.47 1.9 8 0 10.53 1.9 13.66 2.34 14.1 5.47Z"/><path d="m4.7 8.2 2.2 2.2 4.5-4.7" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><i>@ohbabyilvlatina</i></span>
+        </span>
+      </a>
+      <a class="gh" href="https://github.com/LatinaLover67/chapel" target="_blank" rel="noopener" aria-label="Chapel on GitHub"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      <a class="button solid small" href="#download">Download</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Drop your clips.<br />Claude cuts the edit.</h1>
+      <p>Chapel is a free desktop app that edits videos with Claude. Give it your clips and a song, pick a style, and it cuts them on the beat. Then change anything by typing. It runs on your own Anthropic API key.</p>
+      <div class="cta">
+        <a class="bar" href="#download">
+          <span class="seg os">Windows</span>
+          <span class="seg go">Download Chapel <span class="arrow">↓</span></span>
+        </a>
+        <a class="button ghost" href="#how">How it works</a>
+      </div>
+      <p class="fine">Free. Windows 10 and 11. You pay Anthropic only for what Claude uses.</p>
+      <canvas class="hands" aria-hidden="true"></canvas>
+      <div class="logo3d" aria-hidden="true"><canvas></canvas></div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="label"><b>01</b> How it works</div>
+      <div class="body">
+        <h2>You drop the clips.<br />Claude cuts the edit.</h2>
+        <p>Every edit gets its own folder and its own chat. Claude listens to the song, looks at your clips and cuts them in the style you picked. You watch it work, then ask for changes.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n">01</span><span>Drop your clips and a song on the box and pick a style.</span></li>
+        <li><span class="n">02</span><span>Claude listens to the song and finds the drop and the beat.</span></li>
+        <li><span class="n">03</span><span>It looks at your clips and picks the shots.</span></li>
+        <li><span class="n">04</span><span>It cuts them on the beat, checks the frames and renders the video.</span></li>
+        <li><span class="n">05</span><span>The video plays in the app. Type what to change and it cuts again.</span></li>
+      </ol>
+      <figure class="shot"><img src="assets/app.png" alt="Chapel's home screen: a box to drop clips and a song, with the clip style picked" /></figure>
+    </section>
+
+    <section class="block" id="styles">
+      <div class="label"><b>02</b> Styles</div>
+      <div class="body">
+        <h2>Every style is a recipe<br />Claude follows to the frame.</h2>
+        <p>A style says how the edit is cut: the format, where the cuts land and what's added. Claude follows it and checks its own work before you see the video.</p>
+      </div>
+      <div class="table wide">
+        <div class="tr head"><span>Style</span><span>Format</span><span>How it cuts</span></div>
+        <div class="tr"><span class="mono">clip</span><span>16:9, 1920×1080, 60 fps</span><span>One long shot over the song's quiet intro, then a hard cut on every beat from the drop. Nothing added: no text, no zooms, no transitions.</span></div>
+        <div class="tr"><span class="mono">your own</span><span>.zip</span><span>Upload a style as a .zip and give it a name. <em>Coming soon.</em></span></div>
+      </div>
+    </section>
+
+    <section class="block" id="change">
+      <div class="label"><b>03</b> Change it</div>
+      <div class="body">
+        <h2>Don't like a cut?<br />Say so.</h2>
+        <p>Type the change the way you'd tell an editor. Claude reworks the edit and renders it again, and every version is kept.</p>
+      </div>
+      <div class="chat">
+        <div class="you">Make the intro shorter and open on the rocket shot.</div>
+        <div class="status">Looking at your clips…</div>
+        <div class="status">Checking frames…</div>
+        <div class="status">Rendering…</div>
+        <div class="agent">The intro is now two bars and opens on the launch. The cuts after the drop stay on the beat.</div>
+        <div class="done">Edit ready</div>
+      </div>
+    </section>
+
+    <section class="paper" id="faq">
+      <div class="block">
+        <div class="label"><b>04</b> FAQ</div>
+        <div class="body"><h2>Most questions have<br />short answers.</h2></div>
+        <div class="faq">
+          <div><h3>Price</h3><p>Chapel is free. Claude runs on your own Anthropic API key, so you pay Anthropic for what each edit uses. Chapel shows the cost after every change.</p></div>
+          <div><h3>Your key</h3><p>Your key is encrypted with Windows' own protection and stays on your computer. Chapel only sends it to Anthropic.</p></div>
+          <div><h3>Your videos</h3><p>Your clips stay on your computer. Claude reads the edit plan and the still frames it checks, and those go to Anthropic.</p></div>
+          <div><h3>Watermark</h3><p>Edits carry a small "made with chapel" in the corner. Turn it off in Settings, or add your own handle.</p></div>
+          <div><h3>What it needs</h3><p>Windows 10 or 11, Python 3.12, ffmpeg and Git for Windows. Chapel checks for each one and tells you what's missing.</p></div>
+          <div><h3>Styles</h3><p>Chapel ships with the clip style. Uploading your own styles as .zip files is coming next.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block install" id="download">
+      <canvas class="mark" aria-hidden="true"></canvas>
+      <div class="body">
+        <div class="label"><b>05</b> Download</div>
+        <h2>Get Chapel and make<br />your first edit.</h2>
+        <div class="cta left">
+          <span class="bar off"><span class="seg os">Windows</span><span class="seg go">Installer coming soon</span></span>
+        </div>
+        <div class="reqs">
+          <div class="tr"><span>Windows 10 and 11</span><span class="mono dim">.exe · soon</span></div>
+          <div class="tr"><span>Python 3.12</span><a class="mono" href="https://www.python.org/downloads/">python.org</a></div>
+          <div class="tr"><span>ffmpeg</span><a class="mono" href="https://ffmpeg.org/download.html">ffmpeg.org</a></div>
+          <div class="tr"><span>Git for Windows</span><a class="mono" href="https://git-scm.com/download/win">git-scm.com</a></div>
+          <div class="tr"><span>An Anthropic API key</span><a class="mono" href="https://console.anthropic.com/">console.anthropic.com</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span class="brand"><img src="assets/mark.svg" alt="" width="16" height="16" /> Chapel</span>
+    <span class="dim">Powered by Claude</span>
+    <span class="faint mono">© 2026 Chapel</span>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

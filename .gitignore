@@ -1,0 +1,9 @@
+node_modules
+dist
+out
+.DS_Store
+.eslintcache
+*.log*
+.venv/
+__pycache__/
+*.partial.mp4
