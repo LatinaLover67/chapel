@@ -25,7 +25,7 @@ test('success result is done with its cost', () => {
 })
 
 test('error result lists its errors, capped at 300 characters', () => {
-  expect(toChatLines({ type: 'result', subtype: 'error_max_turns', errors: ['a', 'b'] })).toEqual([{ kind: 'error', text: 'The edit stopped: a; b' }])
+  expect(toChatLines({ type: 'result', subtype: 'error_during_execution', errors: ['a', 'b'] })).toEqual([{ kind: 'error', text: 'The edit stopped: a; b' }])
   expect(toChatLines({ type: 'result', subtype: 'error_during_execution', errors: ['x'.repeat(400)] })[0].text).toHaveLength(300)
 })
 
@@ -43,4 +43,9 @@ test('system and user messages show nothing', () => {
 
 test('a success result flagged as an error shows nothing (the error line already did)', () => {
   expect(toChatLines({ type: 'result', subtype: 'success', is_error: true, result: 'Invalid API key', total_cost_usd: 0 })).toEqual([])
+})
+
+test('turn and budget limits say where to raise them', () => {
+  expect(toChatLines({ type: 'result', subtype: 'error_max_turns', errors: [] })[0].text).toBe('The edit hit your turn limit. Raise it in Settings, then ask again.')
+  expect(toChatLines({ type: 'result', subtype: 'error_max_budget_usd', errors: [] })[0].text).toBe('The edit hit your budget limit. Raise it in Settings, then ask again.')
 })

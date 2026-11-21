@@ -18,15 +18,26 @@ const api: ChapelApi = {
     get: () => call('settings:get'),
     update: (p) => call('settings:update', p),
     setApiKey: (k) => call('settings:setApiKey', k),
+    clearApiKey: () => call('settings:clearApiKey'),
+    setOpenAiKey: (k) => call('settings:setOpenAiKey', k),
+    clearOpenAiKey: () => call('settings:clearOpenAiKey'),
     pickEditsDir: () => call('settings:pickEditsDir')
   },
-  styles: { list: () => call('styles:list') },
+  agents: { detect: (fresh) => call('agents:detect', fresh) },
+  styles: {
+    list: () => call('styles:list'),
+    pick: (kind) => call('styles:pick', kind),
+    add: (source, name) => call('styles:add', source, name),
+    remove: (name) => call('styles:remove', name)
+  },
+  app: { info: () => call('app:info'), open: (what) => call('app:open', what) },
   edits: {
     list: () => call('edits:list'),
     create: (e) => call('edits:create', e),
     change: (d, t) => call('edits:change', d, t),
     cancel: (d) => call('edits:cancel', d),
     videoUrl: (d) => call('edits:videoUrl', d),
+    info: (d) => call('edits:info', d),
     onLine: (cb) => listen('edits:line', cb),
     onDone: (cb) => listen('edits:done', cb)
   },

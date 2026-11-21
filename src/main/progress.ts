@@ -10,15 +10,17 @@ export function friendlyError(code: string): string {
   }
 }
 
-function status(block: { name?: string; input?: Record<string, unknown> }): string | null {
-  if (block.name === 'Read' && /\.(jpe?g|png)$/i.test(String(block.input?.file_path ?? ''))) return 'Looking at a frame…'
-  if (block.name !== 'Bash') return null
-  const cmd = String(block.input?.command ?? '')
+export function commandStatus(cmd: string): string | null {
   if (cmd.includes('--beat')) return 'Listening to the song…'
   if (cmd.includes('render.py') && cmd.includes('--frames')) return 'Checking frames…'
   if (cmd.includes('render.py')) return 'Rendering…'
-  if (/^\s*ffprobe\b/.test(cmd)) return 'Looking at your clips…'
+  if (/\bffprobe\b/.test(cmd)) return 'Looking at your clips…'
   return null
+}
+
+function status(block: { name?: string; input?: Record<string, unknown> }): string | null {
+  if (block.name === 'Read' && /\.(jpe?g|png)$/i.test(String(block.input?.file_path ?? ''))) return 'Looking at a frame…'
+  return block.name === 'Bash' ? commandStatus(String(block.input?.command ?? '')) : null
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +40,8 @@ export function toChatLines(msg: any): ChatLine[] {
   if (msg?.type === 'result') {
     if (msg.subtype === 'success' && msg.is_error) return []
     if (msg.subtype === 'success') return [{ kind: 'done', text: 'Edit ready.', costUsd: msg.total_cost_usd }]
+    if (msg.subtype === 'error_max_turns') return [{ kind: 'error', text: 'The edit hit your turn limit. Raise it in Settings, then ask again.' }]
+    if (msg.subtype === 'error_max_budget_usd') return [{ kind: 'error', text: 'The edit hit your budget limit. Raise it in Settings, then ask again.' }]
     return [{ kind: 'error', text: `The edit stopped: ${(msg.errors ?? []).join('; ')}`.slice(0, 300) }]
   }
   return []

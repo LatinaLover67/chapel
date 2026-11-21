@@ -2,7 +2,8 @@ import { copyFileSync, existsSync, readdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { query as sdkQuery } from '@anthropic-ai/claude-agent-sdk'
 import type { ChatLine } from '../shared/chat'
-import { readMeta, writeMeta } from './editFolder'
+import type { Effort, RunResult } from '../shared/api'
+import { readMeta, writeMeta, type ChapelMeta } from './editFolder'
 import { renderHouseRules } from './houseRules'
 import { toChatLines } from './progress'
 import { makeToolGate } from './toolGate'
@@ -12,6 +13,7 @@ export type QueryFn = (args: { prompt: string; options: Record<string, unknown> 
 export interface RunArgs {
   editDir: string; prompt: string; apiKey: string; model: string; python: string; configDir: string
   signal: AbortSignal; onLine(l: ChatLine): void; claudePath?: string
+  effort?: Effort | null; maxTurns?: number | null; budgetUsd?: number | null
 }
 
 export function firstPrompt(style: string, song: string, notes: string): string {
@@ -22,6 +24,25 @@ export function firstPrompt(style: string, song: string, notes: string): string 
 function snapshot(editDir: string): void {
   const n = readdirSync(join(editDir, 'versions')).filter((f) => /^v\d+\.json$/.test(f)).length
   copyFileSync(join(editDir, 'edit.json'), join(editDir, 'versions', `v${n + 1}.json`))
+}
+
+// the house rules carry this computer's python path, which changes on another pc or after a reinstall
+export function refreshRules(editDir: string, python: string): ChapelMeta {
+  const meta = readMeta(editDir)
+  const rules = renderHouseRules({ style: meta.style, python, song: meta.song })
+  writeFileSync(join(editDir, 'CLAUDE.md'), rules)
+  writeFileSync(join(editDir, 'AGENTS.md'), rules)
+  return meta
+}
+
+export function finishRun(editDir: string, emit: (l: ChatLine) => void): RunResult {
+  const video = join(editDir, 'renders', 'final.mp4')
+  if (!existsSync(video)) {
+    emit({ kind: 'error', text: 'The editor finished without a video.' })
+    return { ok: false, video: null }
+  }
+  if (existsSync(join(editDir, 'edit.json'))) snapshot(editDir)
+  return { ok: true, video }
 }
 
 export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknown as QueryFn): Promise<{ ok: boolean; video: string | null }> {
@@ -45,10 +66,7 @@ export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknow
   const abortController = new AbortController()
   const onAbort = (): void => abortController.abort()
   run.signal.addEventListener('abort', onAbort)
-  const meta = readMeta(run.editDir)
-  const rules = renderHouseRules({ style: meta.style, python: run.python, song: meta.song })
-  writeFileSync(join(run.editDir, 'CLAUDE.md'), rules)
-  writeFileSync(join(run.editDir, 'AGENTS.md'), rules)
+  const meta = refreshRules(run.editDir, run.python)
   const options: Record<string, unknown> = {
     cwd: run.editDir,
     model: run.model,
@@ -59,7 +77,11 @@ export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknow
     disallowedTools: ['WebSearch', 'WebFetch', 'Task', 'PowerShell'],
     canUseTool: makeToolGate(run.editDir, run.python),
     permissionMode: 'default',
-    maxTurns: 80,
+    maxTurns: run.maxTurns ?? 80,
+    ...(run.effort ? { effort: run.effort } : {}),
+    ...(run.budgetUsd ? { maxBudgetUsd: run.budgetUsd } : {}),
+    mcpServers: {},
+    strictMcpConfig: true,
     ...(run.claudePath ? { pathToClaudeCodeExecutable: run.claudePath } : {}),
     abortController
   }
@@ -103,11 +125,5 @@ export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknow
     return { ok: false, video: null }
   }
   if (!success) return { ok: false, video: null }
-  const video = join(run.editDir, 'renders', 'final.mp4')
-  if (!existsSync(video)) {
-    emit({ kind: 'error', text: 'The editor finished without a video.' })
-    return { ok: false, video: null }
-  }
-  if (existsSync(join(run.editDir, 'edit.json'))) snapshot(run.editDir)
-  return { ok: true, video }
+  return finishRun(run.editDir, emit)
 }

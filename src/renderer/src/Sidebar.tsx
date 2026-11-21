@@ -14,7 +14,7 @@ export function Logo(): React.JSX.Element {
   )
 }
 
-export default function Sidebar(p: { view: View; edits: EditSummary[]; go(v: View): void }): React.JSX.Element {
+export default function Sidebar(p: { view: View; edits: EditSummary[]; busy: Set<string>; go(v: View): void }): React.JSX.Element {
   const active = (v: View): string => (v.kind === p.view.kind && (v.kind !== 'edit' || (p.view.kind === 'edit' && v.editDir === p.view.editDir)) ? ' active' : '')
   return (
     <nav className="sidebar">
@@ -28,7 +28,8 @@ export default function Sidebar(p: { view: View; edits: EditSummary[]; go(v: Vie
         {p.edits.length === 0 && <div className="hint">Edits you make show up here.</div>}
         {p.edits.map((e) => (
           <button key={e.dir} className={'nav' + active({ kind: 'edit', editDir: e.dir })} title={e.name} onClick={() => p.go({ kind: 'edit', editDir: e.dir })}>
-            {e.name}
+            <span className="nav-name">{e.name}</span>
+            {p.busy.has(e.dir) && <span className="busy" aria-label="working" />}
           </button>
         ))}
       </div>

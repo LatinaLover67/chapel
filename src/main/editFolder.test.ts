@@ -20,7 +20,7 @@ beforeEach(() => {
   writeFileSync(join(sd, 'render.py'), '')
   writeFileSync(join(sd, 'scripts', 'clip.py'), '')
   writeFileSync(join(sd, 'tests', 'test_x.py'), '')
-  style = { name: 'clip', description: '', dir: sd }
+  style = { name: 'clip', description: '', dir: sd, builtIn: true }
 })
 
 const make = (over: Partial<NewEdit> = {}): Promise<string> =>

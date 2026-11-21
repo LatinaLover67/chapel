@@ -6,7 +6,7 @@ import { renderHouseRules } from './houseRules'
 import type { Watermark } from './settings'
 import type { StyleInfo } from './styles'
 
-export interface ChapelMeta { style: string; song: string; created: string; sessionId: string | null; watermark: Watermark }
+export interface ChapelMeta { style: string; song: string; created: string; sessionId: string | null; codexThreadId?: string | null; watermark: Watermark }
 export interface NewEdit { name: string; clips: string[]; song: string; style: StyleInfo; python: string; watermark: Watermark }
 
 export function safeName(editsDir: string, name: string): string {

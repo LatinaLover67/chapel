@@ -157,3 +157,14 @@ test('a session that can no longer be resumed starts fresh', async () => {
   expect(calls.map((o) => o.resume)).toEqual(['gone', undefined])
   expect(readMeta(dir).sessionId).toBe('s1')
 })
+
+test('passes effort, limits and no MCP servers to the SDK', async () => {
+  await runAgent(args({ effort: 'high', maxTurns: 30, budgetUsd: 2 }), fake())
+  expect(seen).toMatchObject({ effort: 'high', maxTurns: 30, maxBudgetUsd: 2, mcpServers: {}, strictMcpConfig: true })
+})
+
+test('leaves effort and budget to the defaults when they are off', async () => {
+  await runAgent(args(), fake())
+  expect(seen.maxTurns).toBe(80)
+  expect('effort' in seen || 'maxBudgetUsd' in seen).toBe(false)
+})

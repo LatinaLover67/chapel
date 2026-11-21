@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 
-export type ExecFn = (cmd: string, args: string[]) => Promise<{ code: number; stdout: string; stderr: string }>
+export type ExecFn = (cmd: string, args: string[], env?: Record<string, string>) => Promise<{ code: number; stdout: string; stderr: string }>
 export interface Runtime { python: string; ffmpeg: string }
 
 export function pythonCandidates(platform: NodeJS.Platform): string[][] {
