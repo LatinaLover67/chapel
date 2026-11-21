@@ -1,6 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, protocol, net, safeStorage, dialog, Notification } from 'electron'
 import { basename, join, resolve, sep } from 'path'
-import { existsSync, mkdirSync, readdirSync, statSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'fs'
 import { mkdtemp, rm } from 'fs/promises'
 import { tmpdir } from 'os'
 import { spawn } from 'child_process'
@@ -77,6 +77,8 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, w) => optimizer.watchWindowShortcuts(w))
 
   const userData = app.getPath('userData')
+  // an update that was downloaded has been installed by now
+  try { rmSync(join(userData, 'update'), { recursive: true, force: true }) } catch { /* the installer may still hold it */ }
   const configDir = join(userData, 'agent')
   mkdirSync(configDir, { recursive: true })
   const store = createSettingsStore(userData, join(app.getPath('documents'), 'Chapel'), {
