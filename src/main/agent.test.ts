@@ -168,3 +168,13 @@ test('leaves effort and budget to the defaults when they are off', async () => {
   expect(seen.maxTurns).toBe(80)
   expect('effort' in seen || 'maxBudgetUsd' in seen).toBe(false)
 })
+
+test('an error the SDK throws after Claude already reported one adds no second line', async () => {
+  const q: QueryFn = async function* () {
+    yield { type: 'assistant', error: 'authentication_failed', message: { content: [] } }
+    yield { type: 'result', subtype: 'success', is_error: true }
+    throw new Error('Claude Code returned an error result: Invalid API key')
+  }
+  expect(await runAgent(args(), q)).toEqual({ ok: false, video: null })
+  expect(lines).toEqual([{ kind: 'error', text: 'Your API key was rejected. Check it in Settings.' }])
+})

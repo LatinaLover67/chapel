@@ -114,6 +114,8 @@ export async function runAgent(run: RunArgs, query: QueryFn = sdkQuery as unknow
       emit({ kind: 'status', text: 'Stopped.' })
       return { ok: false, video: null }
     }
+    // the sdk throws after an error result it already sent; that one has been shown
+    if (errored) return { ok: false, video: null }
     const m = e instanceof Error ? e.message : String(e)
     emit({ kind: 'error', text: started ? `The edit stopped: ${m}` : `Chapel couldn't start the AI: ${m}` })
     return { ok: false, video: null }
